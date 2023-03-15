@@ -18,6 +18,12 @@ const GuidePage = () => {
         setCurrGuideData(response.data);
       });
   }, []);
+
+  const reqChangeHandler = ()=>{
+    axios.get("http://localhost:4000/reject",{
+      params: { currUserName: currUserName },
+    })
+  }
   
   return (
     <>
@@ -80,8 +86,8 @@ const GuidePage = () => {
                       Chat
                     </a>
                   </button>
-                  <button className={classes["createbtn"]} id="Create-post">
-                    <i class="fa fa-plus"></i> Change Availability
+                  <button className={classes["createbtn"]} onClick={reqChangeHandler} id="Create-post">
+                     Change Availability
                   </button>
                 </div>
                 <div className={classes["user-rating"]}>
