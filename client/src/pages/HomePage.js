@@ -1,97 +1,231 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../Assets/Styles/home.css";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 const HomePage = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    let container = document.getElementById("container");
+    setTimeout(() => {
+      container.classList.add("home-sign-in");
+    }, 200);
+  }, []);
+
+  const toggle = () => {
+    let container = document.getElementById("container");
+
+    container.classList.toggle("home-sign-in");
+    container.classList.toggle("home-sign-up");
+  };
+
+  const options = ["Guide", "Tourist"];
+
+  const Navigate = useNavigate();
+  const [loginuserName, setloginUserName] = useState("");
+  const [loginpassWord, setloginPassWord] = useState("");
+  localStorage.setItem("RoomKey", "JDKVELDNPgf6CbmdAAAL");
+  const loginuserNameChangeHandler = (e) => {
+    setloginUserName(e.target.value);
+  };
+  const loginpassWordChangeHandler = (e) => {
+    setloginPassWord(e.target.value);
+  };
+  const loginsubmitHandler = async (e) => {
+    // e.preventDefault();
+    let loginData = {
+      userName: loginuserName,
+      passWord: loginpassWord,
+    };
+    console.log(loginData);
+    const res = await axios({
+      method: "post",
+      url: "http://localhost:4000/loginData",
+      data: {
+        userName: loginuserName,
+        passWord: loginpassWord,
+      },
+    });
+    console.log(res);
+    const userType = res.data;
+    console.log(userType);
+    localStorage.setItem("userName", loginuserName);
+    Navigate(`/${userType}Page`);
+  };
+  useEffect(() => {
+    loginsubmitHandler();
+  }, []);
+
+  // SignUp
+
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [passWord, setPassWord] = useState("");
+  const [userType, setUserType] = useState("");
+  const firstNameChangeHandler = (e) => {
+    setfirstName(e.target.value);
+  };
+  const lastNameChangeHandler = (e) => {
+    setLastName(e.target.value);
+  };
+  const userNameChangeHandler = (e) => {
+    setUserName(e.target.value);
+  };
+  const passWordChangeHandler = (e) => {
+    setPassWord(e.target.value);
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const signUpData = {
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      passWord: passWord,
+      userType: userType,
+    };
+    console.log(signUpData);
+    toggle()
+    await axios.post("http://localhost:4000/signUpData", signUpData);
+  };
+
+  const dropdownChangeHandler = (e) => {
+    setUserType(e.value);
+  };
+
   return (
+    <div id="container" className="home-container">
+      {/* <!-- FORM SECTION --> */}
+      <div className="home-row">
+        {/* <!-- SIGN UP --> */}
+        <div className="home-col home-align-items-center home-flex-col home-sign-up">
+          <div className="home-form-wrapper home-align-items-center">
+            <div className="home-form home-sign-up">
+              <form method="post">
+                <div className="home-input-group">
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    required
+                    onChange={userNameChangeHandler}
+                    value={userName}
+                  />
+                </div>
+                <div className="home-input-group">
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    required
+                    onChange={firstNameChangeHandler}
+                    value={firstName}
+                  />
+                </div>
+                <div className="home-input-group">
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    required
+                    onChange={lastNameChangeHandler}
+                    value={lastName}
+                  />
+                </div>
+                <div className="home-input-group">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={passWordChangeHandler}
+                    value={passWord}
+                  />
+                </div>
+                <Dropdown
+                  className="home-dropdown"
+                  options={options}
+                  value={userType}
+                  onChange={dropdownChangeHandler}
+                  placeholder="You are?"
+                />
+              </form>
 
-    <>
-
-{/* <div class="login-root">
-    <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
-      <div class="loginbackground box-background--white padding-top--64">
-        <div class="loginbackground-gridContainer">
-          <div class="box-root flex-flex" style="grid-area: top / start / 8 / end;">
-            <div class="box-root" style="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%); flex-grow: 1;">
+              <button onClick={submitHandler}>Sign up</button>
+              <p>
+                <span>Already have an account?</span>
+                <b onClick={toggle} className="home-pointer">
+                  Sign in here
+                </b>
+              </p>
             </div>
           </div>
-          <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5;">
-            <div class="box-root box-divider--light-all-2 animationLeftRight tans3s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 6 / start / auto / 2;">
-            <div class="box-root box-background--blue800" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 7 / start / auto / 4;">
-            <div class="box-root box-background--blue animationLeftRight" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6;">
-            <div class="box-root box-background--gray100 animationLeftRight tans3s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 2 / 15 / auto / end;">
-            <div class="box-root box-background--cyan200 animationRightLeft tans4s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 3 / 14 / auto / end;">
-            <div class="box-root box-background--blue animationRightLeft" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 4 / 17 / auto / 20;">
-            <div class="box-root box-background--gray100 animationRightLeft tans4s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 5 / 14 / auto / 17;">
-            <div class="box-root box-divider--light-all-2 animationRightLeft tans3s" style="flex-grow: 1;"></div>
-          </div>
         </div>
-      </div>
-      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
-        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-          <h1><a href="http://blog.stackfindover.com/" rel="dofollow">Stackfindover</a></h1>
-        </div>
-        <div class="formbg-outer">
-          <div class="formbg">
-            <div class="formbg-inner padding-horizontal--48">
-              <span class="padding-bottom--15">Sign in to your account</span>
-              <form id="stripe-login">
-                <div class="field padding-bottom--24">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" />
+        {/* <!-- END SIGN UP -->
+			<!-- SIGN IN --> */}
+        <div className="home-col home-align-items-center home-flex-col home-sign-in">
+          <div className="home-form-wrapper home-align-items-center">
+            <div className="home-form home-sign-in">
+              <form method="post">
+                <div className="home-input-group">
+                  <input
+                    type="text"
+                    onChange={loginuserNameChangeHandler}
+                    value={loginuserName}
+                    placeholder="Username"
+                  />
                 </div>
-                <div class="field padding-bottom--24">
-                  <div class="grid--50-50">
-                    <label for="password">Password</label>
-                    <div class="reset-pass">
-                      <a href="#">Forgot your password?</a>
-                    </div>
-                  </div>
-                  <input type="password" name="password" />
-                </div>
-                <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
-                  <label for="checkbox">
-                    <input type="checkbox" name="checkbox" /> Stay signed in for a week
-                  </label>
-                </div>
-                <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Continue" />
-                </div>
-                <div class="field">
-                  <a class="ssolink" href="#">Use single sign-on (Google) instead</a>
+                <div className="home-input-group">
+                  <input
+                    type="password"
+                    onChange={loginpassWordChangeHandler}
+                    value={loginpassWord}
+                    placeholder="Password"
+                  />
                 </div>
               </form>
+
+              <button onClick={loginsubmitHandler}>Sign in</button>
+              <p>
+                <b style={{cursor:"pointer"}}
+                  onClick={() => {
+                    Navigate("/forgotPassWord");
+                  }}
+                >
+                  Forgot password?
+                </b>
+              </p>
+              <p>
+                <span>Don't have an account?</span>
+                <b onClick={toggle} className="home-pointer">
+                  Sign up here
+                </b>
+              </p>
             </div>
           </div>
-        
+          <div className="home-form-wrapper"></div>
         </div>
+        {/* <!-- END SIGN IN --> */}
       </div>
+      {/* <!-- END FORM SECTION -->
+		<!-- CONTENT SECTION --> */}
+      <div className="home-row home-content-row">
+        {/* <!-- SIGN IN CONTENT --> */}
+        <div className="home-col home-align-items-center home-flex-col">
+          <div className="home-text home-sign-in">
+            <h2>Welcome</h2>
+          </div>
+          <div className="home-img home-sign-in"></div>
+        </div>
+        {/* <!-- END SIGN IN CONTENT -->
+			<!-- SIGN UP CONTENT --> */}
+        <div className="home-col home-align-items-center home-flex-col">
+          <div className="home-img home-sign-up"></div>
+          <div className="home-text home-sign-up">
+            <h2>Join with us</h2>
+          </div>
+        </div>
+        {/* <!-- END SIGN UP CONTENT --> */}
+      </div>
+      {/* <!-- END CONTENT SECTION --> */}
     </div>
-  </div> */}
-
-
-
-
-        <div>
-        <button onClick={()=>{navigate("/loginPage")}}>Login</button>
-        <button onClick={()=>{navigate("/signUpPage")}}>Sign/Up</button>     
-    </div>
-    </>
-    
   );
-}
+};
 
 export default HomePage;

@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import classes from "../Assets/Styles/guideProfileForm.module.css";
 const GuideProfileForm = (props) => {
-  console.log(props.currGuideData);
+  // console.log(props.currGuideData);
   const [guideData, setGuideData] = useState({
     firstName: props.currGuideData[0].firstName,
     lastName: props.currGuideData[0].lastName,
@@ -53,6 +53,7 @@ const GuideProfileForm = (props) => {
     setGuideData({...guideData, rating:e.target.value})
   }
   const saveHandler = async () => {
+    console.log(guideData)
     await axios.post("http://localhost:4000/guideFullData", guideData);
   };
   return (
