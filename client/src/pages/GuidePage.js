@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import GuideProfileForm from "../components/GuideProfileForm";
 import classes from "../Assets/Styles/guidePage.module.css";
@@ -9,6 +11,7 @@ const GuidePage = () => {
   const currUserName = localStorage.getItem("userName");
   const [profileView, setProfileView] = useState(true);
   const [isAvailable, setIsAvailable] = useState(true);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -30,8 +33,12 @@ const GuidePage = () => {
     axios.get("http://localhost:4000/availability",{
       params: { currUserName: currUserName },
     })
+    window.location.reload(false);
   }
-  
+  const logoutHandler=()=>{
+    localStorage.removeItem('userName');
+    Navigate('/');
+  }
   return (
     <>
       {Object.keys(currGuideData).length !== 0 && (
@@ -56,8 +63,7 @@ const GuidePage = () => {
             </div>
             <div className={classes["profile-option"]}>
               <div className={classes["notification"]}>
-                <i class="fa fa-bell"></i>
-                <span className={classes["alert-message"]}>1</span>
+              <button onClick={logoutHandler}>Logout</button>
               </div>
             </div>
           </div>

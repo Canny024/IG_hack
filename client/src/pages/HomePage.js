@@ -46,16 +46,20 @@ const HomePage = () => {
         passWord: loginpassWord,
       },
     });
+    console.log("click")
     console.log(res);
-    const userType = res.data;
-    console.log(userType);
-    localStorage.setItem("userName", loginuserName);
-    Navigate(`/${userType}Page`);
+    let userType
+    if(res.data!== "wrong Credentials"){
+      userType = res.data;
+      console.log(userType);
+      localStorage.setItem("userName", loginuserName);
+      Navigate(`/${userType}Page`);
+    }
+    else{
+      window.alert("Wrong Credentials")
+      window.location.reload(false)
+    }  
   };
-  useEffect(() => {
-    loginsubmitHandler();
-  }, []);
-
   // SignUp
 
   const [firstName, setfirstName] = useState("");
@@ -86,8 +90,15 @@ const HomePage = () => {
       userType: userType,
     };
     console.log(signUpData);
-    toggle()
-    await axios.post("http://localhost:4000/signUpData", signUpData);
+    const res=await axios.post("http://localhost:4000/signUpData", signUpData);
+    if(res.data=="userName already exist"){
+      window.alert(res.data);
+      window.location.reload(false);
+    }
+    else{
+      toggle()
+    }
+
   };
 
   const dropdownChangeHandler = (e) => {

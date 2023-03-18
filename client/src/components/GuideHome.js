@@ -25,11 +25,15 @@ export default function GuideHome() {
     axios.get("http://localhost:4000/accept", {
       params: { currUserName: currUserName },
     });
+    window.location.reload(false);
+
   };
   const rejectHandler = () => {
     axios.get("http://localhost:4000/reject", {
       params: { currUserName: currUserName },
     });
+    window.location.reload(false);
+
   };
   return (
     <>

@@ -27,6 +27,7 @@ app.post("/loginData", async (req, res) => {
     res.send(presentUserType);
     console.log("logged in");
   } else {
+    res.send("wrong Credentials")
     console.log("Wrong credentials");
   }
 });
@@ -50,6 +51,7 @@ app.post("/signUpData", async (req, res) => {
     // console.log("duplicate found")
   } catch (err) {
     console.log(err);
+    res.send("userName already exist");
   }
 });
 

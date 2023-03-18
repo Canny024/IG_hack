@@ -1,9 +1,9 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
+
 import classes from "../Assets/Styles/guideProfileForm.module.css";
 const GuideProfileForm = (props) => {
-  // console.log(props.currGuideData);
   const [guideData, setGuideData] = useState({
     firstName: props.currGuideData[0].firstName,
     lastName: props.currGuideData[0].lastName,
@@ -11,7 +11,7 @@ const GuideProfileForm = (props) => {
     languages: "",
     qualifications: "",
     experience: "",
-    phNo: 1,
+    phNo: null,
     email: "",
     location:"",
     price:"",
@@ -50,10 +50,12 @@ const GuideProfileForm = (props) => {
     setGuideData({...guideData, rating:e.target.value})
   }
   const saveHandler = async () => {
-    console.log(guideData)
+    // console.log(guideData)
+    window.location.reload(false);
     await axios.post("http://localhost:4000/guideFullData", guideData,{
       params: { currUserName: props.currGuideData[0].userName, },
     });
+    // window.location.reload(false);
   };
   return (
     <>
@@ -147,7 +149,7 @@ const GuideProfileForm = (props) => {
                 type="text"
                 placeholder="Ph-No"
                 onChange={c7Handler}
-                value={guideData.phNo}
+                value={guideData.phNo || ''}
               />
               <div className={classes["input-icon"]}>
                 <i class="fa fa-key"></i>
