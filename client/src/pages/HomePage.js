@@ -37,7 +37,7 @@ const HomePage = () => {
       userName: loginuserName,
       passWord: loginpassWord,
     };
-    console.log(loginData);
+    // console.log(loginData);
     const res = await axios({
       method: "post",
       url: "http://localhost:4000/loginData",

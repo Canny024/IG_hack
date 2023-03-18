@@ -5,7 +5,6 @@ export default function GuideHome() {
   const [currGuideData, setCurrGuideData] = useState({});
   const currUserName = localStorage.getItem("userName");
   const [requested, setRequested] = useState(false);
-
   useEffect(() => {
     axios
       .get("http://localhost:4000/requestCheckData", {

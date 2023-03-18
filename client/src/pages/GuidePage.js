@@ -8,19 +8,26 @@ const GuidePage = () => {
   const [currGuideData, setCurrGuideData] = useState({});
   const currUserName = localStorage.getItem("userName");
   const [profileView, setProfileView] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(true);
+
   useEffect(() => {
     axios
-      .get("http://localhost:4000/getGuideData", {
+      .get("http://localhost:4000/getGuideFullData", {
         params: { currUserName: currUserName },
       })
       .then((response) => {
-        
         setCurrGuideData(response.data);
+        setIsAvailable(response.data[0].availaibility);
       });
   }, []);
 
   const reqChangeHandler = ()=>{
     axios.get("http://localhost:4000/reject",{
+      params: { currUserName: currUserName },
+    })
+  }
+  const availabilityChangeHandler=()=>{
+    axios.get("http://localhost:4000/availability",{
       params: { currUserName: currUserName },
     })
   }
@@ -59,20 +66,19 @@ const GuidePage = () => {
             <div  className={classes["left-side"]}>
               <div className={classes["profile-side"]}>
                 <p className={classes["mobile-no"]}>
-                  <i class="fa fa-phone"></i> 7862734434
+                  <i class="fa fa-phone"></i> {currGuideData[0].phNo}
                 </p>
                 <p className={classes["user-mail"]}>
-                  <i class="fa fa-envelope"></i> abhay@gmail
+                  <i class="fa fa-envelope"></i> {currGuideData[0].email}
                 </p>
                 <div className={classes["user-bio"]}>
                   <h3>Bio</h3>
                   <p className={classes["bio"]}>
                     <ul>
-                      <li>Language: Hindi</li>
-                      <li>Experience: 1 year</li>
-                      <li>Qualification: UG</li>
-                      <li>Location: India</li>
-                      <li>Availability: Yes</li>
+                      <li>Language: {currGuideData[0].languages}</li>
+                      <li>Experience: {currGuideData[0].experience} year</li>
+                      <li>Qualification: {currGuideData[0].qualifications}</li>
+                      <li>Location: {currGuideData[0].location}</li>
                     </ul>
                   </p>
                 </div>
@@ -89,10 +95,14 @@ const GuidePage = () => {
                   <button className={classes["createbtn"]} onClick={reqChangeHandler} id="Create-post">
                      Change Availability
                   </button>
+                  <button className={classes["createbtn"]} onClick={availabilityChangeHandler} id="Create-post">
+                    {isAvailable && <h5>Available</h5>}
+                    {!isAvailable && <h5>Not Available</h5>}
+                  </button>
                 </div>
                 <div className={classes["user-rating"]}>
                   <h3 className={classes["rating"]}>
-                    4.3 *
+                    {currGuideData[0].rating}*
                   </h3>
                   <div className={classes["rate"]}>
                     <div className={classes["star-outer"]}>

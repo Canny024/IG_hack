@@ -9,7 +9,6 @@ const GuideProfileForm = (props) => {
     lastName: props.currGuideData[0].lastName,
     userName: props.currGuideData[0].userName,
     languages: "",
-    availaibility: "",
     qualifications: "",
     experience: "",
     phNo: 1,
@@ -28,9 +27,7 @@ const GuideProfileForm = (props) => {
   const c3Handler = (e) => {
     setGuideData({ ...guideData, languages: e.target.value });
   };
-  const c4Handler = (e) => {
-    setGuideData({ ...guideData, availaibility: e.target.value });
-  };
+  
   const c5Handler = (e) => {
     setGuideData({ ...guideData, qualifications: e.target.value });
   };
@@ -54,7 +51,9 @@ const GuideProfileForm = (props) => {
   }
   const saveHandler = async () => {
     console.log(guideData)
-    await axios.post("http://localhost:4000/guideFullData", guideData);
+    await axios.post("http://localhost:4000/guideFullData", guideData,{
+      params: { currUserName: props.currGuideData[0].userName, },
+    });
   };
   return (
     <>
@@ -114,19 +113,7 @@ const GuideProfileForm = (props) => {
                 <i class="fa fa-key"></i>
               </div>
             </div>
-            <div
-              className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
-            >
-              <input
-                type="text"
-                placeholder="Availability"
-                onChange={c4Handler}
-                value={guideData.availaibility}
-              />
-              <div className={classes["input-icon"]}>
-                <i class="fa fa-key"></i>
-              </div>
-            </div>
+            
             <div
               className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
             >

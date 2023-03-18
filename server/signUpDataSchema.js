@@ -22,6 +22,14 @@ const ReactFormDataSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    incomingReq:{
+        type:String,
+        default:"no"
+    },
+    availaibility:{
+        type:Boolean,
+        default:true
+    }
 
 
 

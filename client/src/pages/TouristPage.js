@@ -12,7 +12,11 @@ const TouristPage = () => {
   // console.log(currLoggedUser)
   useEffect(() => {
     axios.get("http://localhost:4000/touristPage").then((response) => {
-      setAllGuideData(response.data);
+      const allGData=response.data;
+      const guideData=allGData.filter((person)=>{
+        return person.userType==="Guide"
+      })
+      setAllGuideData(guideData);
     });
     setCurrLoggedUser(localStorage.getItem("userName"));
   }, []);
@@ -43,7 +47,7 @@ const TouristPage = () => {
   return (
     <div>
       <h1 style={{textAlign:"center", margin:"30px", fontSize:"50px",color:"black", fontWeight:"800"}}>Tourist Page</h1>
-      <div style={{display:"flex", justifyContent:"center", margin:"20px" }}><Dropdown options={options} value={sortBy} onChange={dropdownChangeHandler}   placeholder="Sort By" />;
+      <div style={{display:"flex", justifyContent:"center", margin:"20px" }}><Dropdown options={options} value={sortBy} onChange={dropdownChangeHandler}   placeholder="Sort By" />
       <input style={{width:"30%", height:"35px"}} type="text" placeholder="Search For" value={type} onChange={typeChangeHandler} />
       </div>
       
