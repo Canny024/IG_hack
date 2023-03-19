@@ -186,7 +186,6 @@ app.get("/getGuideFullData", async (req, res) => {
   const currUserName = req.query.currUserName;
   // console.log(currUserName)
   const currGuideData = await GuideUser.find({ userName: currUserName });
-  console.log(currGuideData);
   res.send(currGuideData);
 });
 
