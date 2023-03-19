@@ -210,7 +210,8 @@ const GuideProfileForm = (props) => {
             <div
               className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
             >
-              <input type="text" placeholder="Photo" />
+              <label >Photo</label>
+              <input type="file" placeholder="Photo" />
               <div className={classes["input-icon"]}>
                 <i class="fa fa-key"></i>
               </div>

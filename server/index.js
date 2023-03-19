@@ -6,11 +6,24 @@ app.use(express.json());
 app.use(cors());
 const User = require("./signUpDataSchema");
 const GuideUser = require("./guideFullDataSchema");
+const multer = require('multer')
 
 mongoose.connect(
   "mongodb+srv://aniket1:hianiket123@cluster0.z69mafx.mongodb.net/?retryWrites=true&w=majority",
   { useNewUrlParser: true }
 );
+
+//multer storage
+const Storage=multer.diskStorage({
+  destination:"uploads",
+  filename:(req,file,cb)=>{
+    cb(null, file.originalname);
+  },
+});
+
+const upload=multer({
+  storage:Storage
+}).single('testImage')
 
 app.post("/loginData", async (req, res) => {
   //   console.log(req.body);
@@ -71,6 +84,10 @@ app.post("/guideFullData", async (req, res) => {
     accountNo : req.body.accountNo,
     incomingReq : "no",
     outgoingReq : "no",
+    image:{
+      data:req.file.filename,
+      contentType:"image/png"
+    }
   }
   const filter={userName:req.body.userName}
   let doc = await GuideUser.findOneAndUpdate(filter, update, {

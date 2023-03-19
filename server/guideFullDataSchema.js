@@ -55,6 +55,10 @@ const ReactFormDataSchema = new mongoose.Schema({
     outgoingReq:{
         type:String,
         default:"no"
+    },
+    image:{
+        data:Buffer,
+        contentType:String
     }
 });
 
