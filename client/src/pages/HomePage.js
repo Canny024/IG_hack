@@ -86,7 +86,7 @@ const HomePage = () => {
       userType: userType,
     };
     console.log(signUpData);
-    toggle()
+    toggle();
     await axios.post("http://localhost:4000/signUpData", signUpData);
   };
 
@@ -183,7 +183,8 @@ const HomePage = () => {
 
               <button onClick={loginsubmitHandler}>Sign in</button>
               <p>
-                <b style={{cursor:"pointer"}}
+                <b
+                  style={{ cursor: "pointer" }}
                   onClick={() => {
                     Navigate("/forgotPassWord");
                   }}
