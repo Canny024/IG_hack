@@ -5,7 +5,6 @@ export default function GuideHome() {
   const [currGuideData, setCurrGuideData] = useState({});
   const currUserName = localStorage.getItem("userName");
   const [requested, setRequested] = useState(false);
-
   useEffect(() => {
     axios
       .get("http://localhost:4000/requestCheckData", {
@@ -26,11 +25,15 @@ export default function GuideHome() {
     axios.get("http://localhost:4000/accept", {
       params: { currUserName: currUserName },
     });
+    window.location.reload(false);
+
   };
   const rejectHandler = () => {
     axios.get("http://localhost:4000/reject", {
       params: { currUserName: currUserName },
     });
+    window.location.reload(false);
+
   };
   return (
     <>

@@ -1,7 +1,5 @@
 import './App.css';
 import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import TouristPage from './pages/TouristPage';
 import GuidePage from './pages/GuidePage';
@@ -13,8 +11,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage/>}/>
-        <Route path="/loginPage" element={<LoginPage/>}/>
-        <Route path="/signUpPage" element={<SignUpPage/>}/>
         <Route path="/touristPage" element={<TouristPage/>}/>
         <Route path="/guidePage" element={<GuidePage/>}/>
         <Route path="/forgotPassWord" element={<ForgotPassPage/>}/>

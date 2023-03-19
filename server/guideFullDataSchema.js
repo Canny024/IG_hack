@@ -3,39 +3,38 @@ const mongoose = require('mongoose');
 const ReactFormDataSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
     },
     lastName:{
         type:String,
-        required:true
     },
     userName:{
         type:String,
-        required:true
+        unique:true
+    },
+    passWord:{
+        type:String
+    },
+    userType:{
+        type:String
     },
     languages:{
         type:String,
-        required:true
     },
     availaibility:{
-        type:String,
-        required:true
+        type:Boolean,
+        default:true
     },
     qualifications:{
         type:String,
-        required:true
     },
     experience:{
         type:String,
-        required:true
     },
     phNo:{
         type:Number,
-        required:true
     },
     email:{
         type:String,
-        required:true
     },
     price:{
         type:String,
@@ -46,15 +45,21 @@ const ReactFormDataSchema = new mongoose.Schema({
     rating:{
         type:String
     },
+    accountNo:{
+        type:String
+    },
     incomingReq:{
         type:String,
-       
+       default:"no"
     },
     outgoingReq:{
         type:String,
+        default:"no"
+    },
+    image:{
+        data:Buffer,
+        contentType:String
     }
-
-
 });
 
 const guide = mongoose.model('guide', ReactFormDataSchema);

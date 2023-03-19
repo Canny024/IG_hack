@@ -1,18 +1,17 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
+
 import classes from "../Assets/Styles/guideProfileForm.module.css";
 const GuideProfileForm = (props) => {
-  // console.log(props.currGuideData);
   const [guideData, setGuideData] = useState({
     firstName: props.currGuideData[0].firstName,
     lastName: props.currGuideData[0].lastName,
     userName: props.currGuideData[0].userName,
     languages: "",
-    availaibility: "",
     qualifications: "",
     experience: "",
-    phNo: 1,
+    phNo: null,
     email: "",
     location:"",
     price:"",
@@ -28,9 +27,7 @@ const GuideProfileForm = (props) => {
   const c3Handler = (e) => {
     setGuideData({ ...guideData, languages: e.target.value });
   };
-  const c4Handler = (e) => {
-    setGuideData({ ...guideData, availaibility: e.target.value });
-  };
+  
   const c5Handler = (e) => {
     setGuideData({ ...guideData, qualifications: e.target.value });
   };
@@ -53,8 +50,12 @@ const GuideProfileForm = (props) => {
     setGuideData({...guideData, rating:e.target.value})
   }
   const saveHandler = async () => {
-    console.log(guideData)
-    await axios.post("http://localhost:4000/guideFullData", guideData);
+    // console.log(guideData)
+    window.location.reload(false);
+    await axios.post("http://localhost:4000/guideFullData", guideData,{
+      params: { currUserName: props.currGuideData[0].userName, },
+    });
+    // window.location.reload(false);
   };
   return (
     <>
@@ -114,19 +115,7 @@ const GuideProfileForm = (props) => {
                 <i class="fa fa-key"></i>
               </div>
             </div>
-            <div
-              className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
-            >
-              <input
-                type="text"
-                placeholder="Availability"
-                onChange={c4Handler}
-                value={guideData.availaibility}
-              />
-              <div className={classes["input-icon"]}>
-                <i class="fa fa-key"></i>
-              </div>
-            </div>
+            
             <div
               className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
             >
@@ -160,7 +149,7 @@ const GuideProfileForm = (props) => {
                 type="text"
                 placeholder="Ph-No"
                 onChange={c7Handler}
-                value={guideData.phNo}
+                value={guideData.phNo || ''}
               />
               <div className={classes["input-icon"]}>
                 <i class="fa fa-key"></i>
@@ -221,7 +210,8 @@ const GuideProfileForm = (props) => {
             <div
               className={`${classes["input-group"]} ${classes["input-group-icon"]}`}
             >
-              <input type="text" placeholder="Photo" />
+              <label >Photo</label>
+              <input type="file" placeholder="Photo" />
               <div className={classes["input-icon"]}>
                 <i class="fa fa-key"></i>
               </div>

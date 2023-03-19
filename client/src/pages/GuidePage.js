@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import GuideProfileForm from "../components/GuideProfileForm";
 import classes from "../Assets/Styles/guidePage.module.css";
@@ -8,14 +10,17 @@ const GuidePage = () => {
   const [currGuideData, setCurrGuideData] = useState({});
   const currUserName = localStorage.getItem("userName");
   const [profileView, setProfileView] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const Navigate = useNavigate();
+
   useEffect(() => {
     axios
-      .get("http://localhost:4000/getGuideData", {
+      .get("http://localhost:4000/getGuideFullData", {
         params: { currUserName: currUserName },
       })
       .then((response) => {
-        
         setCurrGuideData(response.data);
+        setIsAvailable(response.data[0].availaibility);
       });
   }, []);
 
@@ -24,7 +29,16 @@ const GuidePage = () => {
       params: { currUserName: currUserName },
     })
   }
-  
+  const availabilityChangeHandler=()=>{
+    axios.get("http://localhost:4000/availability",{
+      params: { currUserName: currUserName },
+    })
+    window.location.reload(false);
+  }
+  const logoutHandler=()=>{
+    localStorage.removeItem('userName');
+    Navigate('/');
+  }
   return (
     <>
       {Object.keys(currGuideData).length !== 0 && (
@@ -49,8 +63,7 @@ const GuidePage = () => {
             </div>
             <div className={classes["profile-option"]}>
               <div className={classes["notification"]}>
-                <i class="fa fa-bell"></i>
-                <span className={classes["alert-message"]}>1</span>
+              <button onClick={logoutHandler}>Logout</button>
               </div>
             </div>
           </div>
@@ -59,20 +72,19 @@ const GuidePage = () => {
             <div  className={classes["left-side"]}>
               <div className={classes["profile-side"]}>
                 <p className={classes["mobile-no"]}>
-                  <i class="fa fa-phone"></i> 7862734434
+                  <i class="fa fa-phone"></i> {currGuideData[0].phNo}
                 </p>
                 <p className={classes["user-mail"]}>
-                  <i class="fa fa-envelope"></i> abhay@gmail
+                  <i class="fa fa-envelope"></i> {currGuideData[0].email}
                 </p>
                 <div className={classes["user-bio"]}>
                   <h3>Bio</h3>
                   <p className={classes["bio"]}>
                     <ul>
-                      <li>Language: Hindi</li>
-                      <li>Experience: 1 year</li>
-                      <li>Qualification: UG</li>
-                      <li>Location: India</li>
-                      <li>Availability: Yes</li>
+                      <li>Language: {currGuideData[0].languages}</li>
+                      <li>Experience: {currGuideData[0].experience} year</li>
+                      <li>Qualification: {currGuideData[0].qualifications}</li>
+                      <li>Location: {currGuideData[0].location}</li>
                     </ul>
                   </p>
                 </div>
@@ -89,10 +101,14 @@ const GuidePage = () => {
                   <button className={classes["createbtn"]} onClick={reqChangeHandler} id="Create-post">
                      Change Availability
                   </button>
+                  <button className={classes["createbtn"]} onClick={availabilityChangeHandler} id="Create-post">
+                    {isAvailable && <h5>Available</h5>}
+                    {!isAvailable && <h5>Not Available</h5>}
+                  </button>
                 </div>
                 <div className={classes["user-rating"]}>
                   <h3 className={classes["rating"]}>
-                    4.3 *
+                    {currGuideData[0].rating}*
                   </h3>
                   <div className={classes["rate"]}>
                     <div className={classes["star-outer"]}>

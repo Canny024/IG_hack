@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Card from "../components/Card";
+import { useNavigate } from "react-router-dom";
+
 const TouristPage = () => {
+  const Navigate = useNavigate();
+  
   const [allGuideData, setAllGuideData] = useState([]);
   const [currLoggedUser,setCurrLoggedUser] =useState("");
   const [sortBy,setSortBy]=useState("None");
@@ -12,7 +16,11 @@ const TouristPage = () => {
   // console.log(currLoggedUser)
   useEffect(() => {
     axios.get("http://localhost:4000/touristPage").then((response) => {
-      setAllGuideData(response.data);
+      const allGData=response.data;
+      const guideData=allGData.filter((person)=>{
+        return person.userType==="Guide"
+      })
+      setAllGuideData(guideData);
     });
     setCurrLoggedUser(localStorage.getItem("userName"));
   }, []);
@@ -38,12 +46,18 @@ const TouristPage = () => {
   else{
    filteredData=allGuideData
   }
+  const logoutHandler=()=>{
+    localStorage.removeItem('userName');
+    Navigate('/');
+
+  }
   
   
   return (
     <div>
       <h1 style={{textAlign:"center", margin:"30px", fontSize:"50px",color:"black", fontWeight:"800"}}>Tourist Page</h1>
-      <div style={{display:"flex", justifyContent:"center", margin:"20px" }}><Dropdown options={options} value={sortBy} onChange={dropdownChangeHandler}   placeholder="Sort By" />;
+      <button onClick={logoutHandler}>Logout</button>
+      <div style={{display:"flex", justifyContent:"center", margin:"20px" }}><Dropdown options={options} value={sortBy} onChange={dropdownChangeHandler}   placeholder="Sort By" />
       <input style={{width:"30%", height:"35px"}} type="text" placeholder="Search For" value={type} onChange={typeChangeHandler} />
       </div>
       
