@@ -23,7 +23,7 @@ const ForgotPassPage = () => {
         callback: (response) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.
           this.onSignInSubmit();
-          console.log("Recaptca varified");
+          // console.log("Recaptca varified");
         },
         defaultCountry: "IN",
       }
@@ -42,19 +42,19 @@ const ForgotPassPage = () => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
         window.confirmationResult = confirmationResult;
-        console.log("OTP has been sent");
+        // console.log("OTP has been sent");
         // ...
       })
       .catch((error) => {
         // Error; SMS not sent
         // ...
-        console.log("SMS not sent");
+        // console.log("SMS not sent");
       });
   };
   const onSubmitOTP = (e) => {
     e.preventDefault();
     const code = enteredOtp;
-    console.log(code);
+    // console.log(code);
     window.confirmationResult
       .confirm(code)
       .then((result) => {

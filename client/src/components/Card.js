@@ -18,7 +18,7 @@ export default function Card(props) {
         params: { currUserName: props.currGuideUsername },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data[0].outgoingReq === "yes") {
           setIsAccepted(true);
         } else {

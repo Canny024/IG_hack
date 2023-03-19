@@ -22,13 +22,15 @@ function Chat({ socket, username, room }) {
       setCurrentMessage("");
     }
   };
+ 
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
-      // console.log(messageList)
     });
   }, [socket]);
-
+  const unique = (value, index, self) => {
+    return self.indexOf(value) === index
+  }
   return (
     <div className="chat-window">
       <div className="chat-header">
@@ -36,7 +38,9 @@ function Chat({ socket, username, room }) {
       </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
-          {messageList.map((messageContent) => {
+          { 
+            
+            messageList.filter(unique).map((messageContent) => {
             return (
               <div
                 className="message"
