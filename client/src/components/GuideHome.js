@@ -11,7 +11,7 @@ export default function GuideHome() {
         params: { currUserName: currUserName },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data[0].incomingReq === "yes") {
           setRequested(true);
         } else {
