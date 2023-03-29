@@ -13,14 +13,19 @@ const TouristPage = () => {
   const [currLoggedUser,setCurrLoggedUser] =useState("");
   const [sortBy,setSortBy]=useState("None");
   const [type,setType]=useState("");
+  const currUserName = localStorage.getItem("userName") || '/0';
   // console.log(currLoggedUser)
   useEffect(() => {
-    axios.get("http://localhost:4000/touristPage").then((response) => {
-      const allGData=response.data;
-      const guideData=allGData.filter((person)=>{
-        return person.userType==="Guide"
-      })
-      setAllGuideData(guideData);
+    axios.get("http://localhost:4000/touristPage", {
+      params: { currUserName: currUserName },
+    }).then((response) => {
+      if(response.data!=="Logged out"){
+        const allGData=response.data;
+        const guideData=allGData.filter((person)=>{
+          return person.userType==="Guide"
+        })
+        setAllGuideData(guideData);
+      }
     });
     setCurrLoggedUser(localStorage.getItem("userName"));
   }, []);
@@ -49,10 +54,7 @@ const TouristPage = () => {
   const logoutHandler=()=>{
     localStorage.removeItem('userName');
     Navigate('/');
-
   }
-  
-  
   return (
     <div>
       <h1 style={{textAlign:"center", margin:"30px", fontSize:"50px",color:"black", fontWeight:"800"}}>Tourist Page</h1>
@@ -83,7 +85,6 @@ const TouristPage = () => {
             rating={data.rating}
           />
           )
-
         })}
       </div>
     </div>
