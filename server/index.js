@@ -6,7 +6,8 @@ app.use(express.json());
 app.use(cors());
 const User = require("./signUpDataSchema");
 const GuideUser = require("./guideFullDataSchema");
-const multer = require('multer')
+const multer = require("multer");
+const bcrypt = require("bcryptjs");
 
 mongoose.connect(
   "mongodb+srv://aniket1:hianiket123@cluster0.z69mafx.mongodb.net/?retryWrites=true&w=majority",
@@ -14,48 +15,69 @@ mongoose.connect(
 );
 
 //multer storage
-const Storage=multer.diskStorage({
-  destination:"uploads",
-  filename:(req,file,cb)=>{
+const Storage = multer.diskStorage({
+  destination: "uploads",
+  filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
 
-const upload=multer({
-  storage:Storage
-}).single('testImage')
+const upload = multer({
+  storage: Storage,
+}).single("testImage");
 
 app.post("/loginData", async (req, res) => {
   //   console.log(req.body);
   const userName = req.body.userName;
   const passWord = req.body.passWord;
-  const exData = await GuideUser.find({
+  // const user = await GuideUser.find({
+  //   userName: userName
+  //   // passWord: passWord,
+  // });
+  // if (exData.length != 0) {
+  //   const presentUser = await GuideUser.find({ userName: userName });
+  //   const presentUserType = presentUser[0].userType;
+  //   console.log(presentUserType);
+  //   res.send(presentUserType);
+  //   console.log("logged in");
+  // } else {
+  //   res.send("wrong Credentials")
+  //   console.log("Wrong credentials");
+  // }
+  const user = await GuideUser.findOne({
     userName: userName,
-    passWord: passWord,
   });
-  if (exData.length != 0) {
-    const presentUser = await GuideUser.find({ userName: userName });
-    const presentUserType = presentUser[0].userType;
-    console.log(presentUserType);
+  if (!user) {
+    return { status: "error", error: "Invalid login" };
+  }
+
+  const isPasswordValid = await bcrypt.compare(passWord, user.passWord);
+  //login successful
+  if (isPasswordValid) {
+    const presentUserType = user.userType;
+    // console.log(presentUserType);
     res.send(presentUserType);
     console.log("logged in");
-  } else {
-    res.send("wrong Credentials")
+  }
+  //login failed
+  else {
+    res.send("wrong Credentials");
     console.log("Wrong credentials");
   }
 });
 app.post("/signUpData", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const userName = req.body.userName;
   const passWord = req.body.passWord;
   const userType = req.body.userType;
+  const newPassword = await bcrypt.hash(passWord, 10);
   const formData = new GuideUser({
     firstName: firstName,
     lastName: lastName,
     userName: userName,
-    passWord: passWord,
+    passWord: newPassword,
     userType: userType,
   });
   try {
@@ -69,27 +91,27 @@ app.post("/signUpData", async (req, res) => {
 });
 
 app.post("/guideFullData", async (req, res) => {
-  const update={
-    firstName :req.body.firstName,
-    lastName :req.body.lastName,
-    userName :req.body.userName,
-    languages : req.body.languages,
-    qualifications : req.body.qualifications,
-    experience : req.body.experience,
-    phNo : req.body.phNo,
-    email : req.body.email,
-    location : req.body.location,
-    price : req.body.price,
-    rating : req.body.rating,
-    accountNo : req.body.accountNo,
-    incomingReq : "no",
-    outgoingReq : "no",
-    image:{
-      data:req.file.filename,
-      contentType:"image/png"
-    }
-  }
-  const filter={userName:req.body.userName}
+  const update = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    userName: req.body.userName,
+    languages: req.body.languages,
+    qualifications: req.body.qualifications,
+    experience: req.body.experience,
+    phNo: req.body.phNo,
+    email: req.body.email,
+    location: req.body.location,
+    price: req.body.price,
+    rating: req.body.rating,
+    accountNo: req.body.accountNo,
+    incomingReq: "no",
+    outgoingReq: "no",
+    image: {
+      data: req.file.filename,
+      contentType: "image/png",
+    },
+  };
+  const filter = { userName: req.body.userName };
   let doc = await GuideUser.findOneAndUpdate(filter, update, {
     new: true,
   });
@@ -103,9 +125,13 @@ app.post("/guideFullData", async (req, res) => {
 // })
 
 app.get("/touristPage", async (req, res) => {
-  const allGuideData = await GuideUser.find();
-  // console.log(allGuideData);??????????????
-  res.send(allGuideData);
+  if(req.query.currUserName.length>0 && req.query.currUserName!=="/0"){
+    const allGuideData = await GuideUser.find();
+    res.send(allGuideData);
+  }
+  else{
+    res.send("Logged out")
+  }
 });
 
 app.post("/newPassWordData", async (req, res) => {
@@ -116,7 +142,7 @@ app.post("/newPassWordData", async (req, res) => {
   let doc = await GuideUser.findOneAndUpdate(filter, update, {
     new: true,
   });
-  res.send("Password Updated");
+  res.send("Password Updated");
 });
 
 app.get("/request", async (req, res) => {
@@ -138,7 +164,7 @@ app.get("/requestCheckData", async (req, res) => {
   if (currGuideData.length === 0) {
     currGuideData = await User.find({ userName: currUserName });
   }
-  console.log(currGuideData);
+  // console.log(currGuideData);
   res.send(currGuideData);
 });
 
