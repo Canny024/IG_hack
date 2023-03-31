@@ -83,6 +83,7 @@ app.post("/signUpData", async (req, res) => {
   try {
     await formData.save();
     console.log("data inserted");
+    res.send("OK");
     // console.log("duplicate found")
   } catch (err) {
     console.log(err);

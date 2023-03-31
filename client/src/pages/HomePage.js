@@ -46,12 +46,9 @@ const HomePage = () => {
         passWord: loginpassWord,
       },
     });
-    console.log("click")
-    console.log(res);
     let userType
     if(res.data!== "wrong Credentials"){
       userType = res.data;
-      console.log(userType);
       localStorage.setItem("userName", loginuserName);
       Navigate(`/${userType}Page`);
     }
@@ -93,10 +90,12 @@ const HomePage = () => {
     const res=await axios.post("http://localhost:4000/signUpData", signUpData);
     if(res.data=="userName already exist"){
       window.alert(res.data);
+      console.log("hello");
       window.location.reload(false);
     }
     else{
-      toggle()
+      console.log("hello");
+      window.location.reload(false);
     }
 
   };
