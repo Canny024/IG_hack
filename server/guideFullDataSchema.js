@@ -39,7 +39,10 @@ const ReactFormDataSchema = new mongoose.Schema({
     price:{
         type:String,
     },
-    location:{
+    city:{
+        type:String
+    },
+    country:{
         type:String
     },
     rating:{
@@ -56,9 +59,9 @@ const ReactFormDataSchema = new mongoose.Schema({
         type:String,
         default:"no"
     },
-    image:{
-        data:Buffer,
-        contentType:String
+    about:{
+        type:String,
+        default:"Hello"
     }
 });
 

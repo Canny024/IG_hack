@@ -101,21 +101,21 @@ app.post("/guideFullData", async (req, res) => {
     experience: req.body.experience,
     phNo: req.body.phNo,
     email: req.body.email,
-    location: req.body.location,
+    city: req.body.city,
+    country:req.body.country,
     price: req.body.price,
     rating: req.body.rating,
     accountNo: req.body.accountNo,
     incomingReq: "no",
     outgoingReq: "no",
-    image: {
-      data: req.file.filename,
-      contentType: "image/png",
-    },
+    about:req.body.about,
   };
+  
   const filter = { userName: req.body.userName };
   let doc = await GuideUser.findOneAndUpdate(filter, update, {
     new: true,
   });
+  console.log("updated");
 });
 
 // app.get("/getGuideData", async(req,res)=>{

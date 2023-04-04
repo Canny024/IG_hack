@@ -2,9 +2,6 @@
     --primary-color: #4EA685;
     --secondary-color: #57B894;
     --black: #000000;
-    --white: #ffffff;
-    --gray: #efefef;
-    --gray-2: #757575;
 
     --facebook-color: #4267B2;
     --google-color: #DB4437;
@@ -27,9 +24,9 @@
     width: 100%;
     padding: 1rem 3rem;
     font-size: 1rem;
-    background-color: var(--gray);
+    background-color: #efefef;
     border-radius: .5rem;
-    border: 0.125rem solid var(--white);
+    border: 0.125rem solid #ffffff;
     outline: none;
 }
 
@@ -63,7 +60,7 @@
 
 .home-form {
     padding: 1rem;
-    background-color: var(--white);
+    background-color: #ffffff;;
     border-radius: 1.5rem;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -84,16 +81,16 @@
     left: 1rem;
     transform: translateY(-50%);
     font-size: 1.4rem;
-    color: var(--gray-2);
+    color: #757575;
 }
 
 .home-input-group input {
     width: 100%;
     padding: 1rem 3rem;
     font-size: 1rem;
-    background-color: var(--gray);
+    background-color: #efefef;
     border-radius: .5rem;
-    border: 0.125rem solid var(--white);
+    border: 0.125rem solid #ffffff;;
     outline: none;
 }
 
@@ -108,7 +105,7 @@
     border-radius: .5rem;
     border: none;
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #ffffff;;
     font-size: 1.2rem;
     outline: none;
 }
@@ -134,7 +131,7 @@
 }
 
 .home-social-list>div {
-    color: var(--white);
+    color: #ffffff;;
     margin: 0 .5rem;
     padding: .7rem;
     cursor: pointer;
@@ -209,7 +206,7 @@
 
 .home-text {
     margin: 4rem;
-    color: var(--white);
+    color: #ffffff;;
 }
 
 .home-text h2 {
@@ -317,7 +314,7 @@
         width: 100%;
         position: absolute;
         padding: 2rem;
-        background-color: var(--white);
+        background-color: #ffffff;;
         border-top-left-radius: 2rem;
         border-top-right-radius: 2rem;
         transform: translateY(100%);

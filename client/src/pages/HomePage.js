@@ -90,11 +90,10 @@ const HomePage = () => {
     const res=await axios.post("http://localhost:4000/signUpData", signUpData);
     if(res.data=="userName already exist"){
       window.alert(res.data);
-      console.log("hello");
       window.location.reload(false);
     }
     else{
-      console.log("hello");
+      
       window.location.reload(false);
     }
 
